@@ -1,0 +1,52 @@
+.traffic-light {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.light-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.light {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  background-color: #d1d5db;
+}
+
+.light.active.red {
+  background-color: #ef4444;
+}
+
+.light.active.yellow {
+  background-color: #fbbf24;
+}
+
+.light.active.green {
+  background-color: #10b981;
+}
+
+.light.green {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result {
+  color: white;
+  font-weight: bold;
+}
+
+.fib-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
