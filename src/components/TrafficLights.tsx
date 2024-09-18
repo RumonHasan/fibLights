@@ -3,50 +3,76 @@ import useFib from '../utils/useFib';
 import './TrafficLights.css';
 import useDelay from '../utils/useDelay';
 
-const TrafficLights = ({ startValue }: { startValue: number }) => {
+const TrafficLights = ({
+  startValue,
+  isCalculating,
+  onStopCalculation,
+}: {
+  startValue: number;
+  isCalculating: boolean;
+  onStopCalculation: () => void;
+}) => {
   const [currentValue, setCurrentValue] = useState(startValue); // current starting value
   const [calcState, setCalcState] = useState<
     'stopped' | 'calculating' | 'complete'
   >('stopped'); // for three traffic lights state
   const [fibResult, setFibResult] = useState<number | null>(null); // to store the fib result that will be shown on green light
-  // initializing the use fib hook
+  // custom hooks for calculating the fibonacci number and delaying calculation
   const fib = useFib();
-  // hook for simulating calculation delay
   const delayCalculation = useDelay();
+
+  // function to reset all calculation params after certain conditions are met
+  const resetCalculations = useCallback(() => {
+    setCurrentValue(startValue);
+    setCalcState('stopped');
+    setFibResult(null);
+    onStopCalculation(); // for sending a stop calculation state back to parent
+  }, [onStopCalculation, startValue]);
 
   /* main calculation function that adds a delay time to simulate 
   calculation to change states according to every state of calculation of each fib num*/
   const runCalculation = useCallback(async () => {
-    if (currentValue < startValue + 10) {
-      // Start with red light
-      setCalcState('stopped');
-
+    // while calculating switch back and forth between yellow and green lights
+    if (currentValue <= startValue + 10) {
       // Switch to yellow while calculating
       setCalcState('calculating');
       await delayCalculation(1000);
-
-      // Calculate Fibonacci number using the hook
+      // passing the value to the fib hook to calculate the fibonacci value
       const fibonacciValue = fib(currentValue);
-
       // Switch to green and show result
       setFibResult(fibonacciValue);
       setCalcState('complete');
       await delayCalculation(2000);
-
       // Move to next number keeping in mind the boundary does not exceed 10
       if (currentValue < startValue + 10) {
         setCurrentValue((prev) => prev + 1);
-        console.log(currentValue);
-      } else {
-        setCalcState('stopped'); // Final state after all calculations
       }
+    } // when it hits the final value switch back to red
+    if (currentValue === startValue + 10) {
+      resetCalculations();
     }
-  }, [currentValue, startValue, delayCalculation, fib]);
+  }, [currentValue, startValue, delayCalculation, fib, resetCalculations]);
 
-  // running calc function
+  // running calc function when the button is clicked
   useEffect(() => {
-    runCalculation();
-  }, [runCalculation]);
+    let calcMount = true;
+    if (!isCalculating) {
+      // when reset button is clicked... make sure to reset all the values
+      resetCalculations();
+    }
+    if (isCalculating && calcMount) {
+      runCalculation();
+    }
+    return () => {
+      calcMount = false;
+    };
+  }, [
+    currentValue,
+    isCalculating,
+    resetCalculations,
+    runCalculation,
+    startValue,
+  ]);
 
   return (
     <div className="traffic-light">
