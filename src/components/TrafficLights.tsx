@@ -53,11 +53,10 @@ const TrafficLights = ({
     }
   }, [currentValue, startValue, delayCalculation, fib, resetCalculations]);
 
-  // running calc function when the button is clicked
+  // responsible for the lifecyle of the start/ reset of the calculation
   useEffect(() => {
     let calcMount = true;
     if (!isCalculating) {
-      // when reset button is clicked... make sure to reset all the values
       resetCalculations();
     }
     if (isCalculating && calcMount) {
@@ -73,6 +72,11 @@ const TrafficLights = ({
     runCalculation,
     startValue,
   ]);
+  // Dependencies:
+  // - currentValue and startValue: to re-run effect if these values change
+  // - isCalculating: to respond to changes in calculation state
+  // - resetCalculations and runCalculation: included to satisfy exhaustive-deps rule,
+  //   though they should be stable if memoized with useCallback
 
   return (
     <div className="traffic-light">
