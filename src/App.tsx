@@ -21,7 +21,7 @@ const App = () => {
       <div className="app-title-container">
         <h1 className="app-title">Fibonacci Traffic Lights</h1>
         <button className="calc-button" onClick={handleStartCalculation}>
-          {startCalculation ? 'Reset Calculations!!!' : 'Run Calculations!!!'}
+          {startCalculation ? 'Reset Calculation' : 'Start Calculation'}
         </button>
       </div>
 

@@ -26,7 +26,7 @@ const TrafficLights = ({
     setCurrentValue(startValue);
     setCalcState('stopped');
     setFibResult(null);
-    onStopCalculation(); // for sending a stop calculation state back to parent
+    onStopCalculation(); // for sending a stop calculation state as callback to parent component
   }, [onStopCalculation, startValue]);
 
   /* main calculation function that adds a delay time to simulate 
