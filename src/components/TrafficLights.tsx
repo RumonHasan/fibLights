@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import useFib from '../utils/useFib';
 import './TrafficLights.css';
 import useDelay from '../utils/useDelay';
+import { CALC_CYCLES } from '../utils/data';
 
 const TrafficLights = ({
   startValue,
@@ -33,7 +34,7 @@ const TrafficLights = ({
   calculation to change states according to every state of calculation of each fib num*/
   const runCalculation = useCallback(async () => {
     // while calculating switch back and forth between yellow and green lights
-    if (currentValue <= startValue + 10) {
+    if (currentValue <= startValue + CALC_CYCLES) {
       // Switch to yellow while calculating
       setCalcState('calculating');
       await delayCalculation(1000);
@@ -44,11 +45,12 @@ const TrafficLights = ({
       setCalcState('complete');
       await delayCalculation(2000);
       // Move to next number keeping in mind the boundary does not exceed 10
-      if (currentValue < startValue + 10) {
+      if (currentValue < startValue + CALC_CYCLES) {
+        // CALC_CYCLES is 10 concurrent values starting from the starting value
         setCurrentValue((prev) => prev + 1);
       }
     } // when it hits the final value switch back to red
-    if (currentValue === startValue + 10) {
+    if (currentValue === startValue + CALC_CYCLES) {
       resetCalculations();
     }
   }, [currentValue, startValue, delayCalculation, fib, resetCalculations]);

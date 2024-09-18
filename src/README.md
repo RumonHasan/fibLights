@@ -55,3 +55,4 @@ Before you begin, ensure you have the following installed:
 - `src/App.tsx`: The parent component that manages multiple TrafficLights
 - `src/utils/useFib.ts`: Custom hook for Fibonacci number calculation with optimized caching in order to store previous calculations.
 - `src/utils/useDelay.ts`: Custom hook for simulating calculation delay in order to switch between traffic lights.
+- `src/utils/data.ts`: Contains the starting values and number of calculation cycles the fibonacci number will be calculated from the base value
